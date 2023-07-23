@@ -20,7 +20,7 @@ await server.register(fastifyRateLimit, {
 await server.register(
     cors,
     {
-        origin: /^http[s]?:\/\/(?:([^.]+)\.)?(vychs\.com|localhost:3000)(?:\/.*)?$/,
+        origin: /^http[s]?:\/\/(?:animals\.)?(vychs\.com|localhost:3000)(?:\/.*)?$/,
         credentials: true,
         methods: ['POST', 'GET'],
     }

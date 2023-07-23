@@ -1,3 +1,4 @@
+import cors from '@fastify/cors'
 import fastifyRateLimit from '@fastify/rate-limit'
 import fastify from 'fastify'
 import fastifyHttpErrorsEnhanced from 'fastify-http-errors-enhanced'
@@ -16,6 +17,14 @@ const server = fastify({ logger: false })
 await server.register(fastifyRateLimit, {
     global: false,
 })
+await server.register(
+    cors,
+    {
+        origin: /^http[s]?:\/\/(?:([^.]+)\.)?(vychs\.com|localhost:3000)(?:\/.*)?$/,
+        credentials: true,
+        methods: ['POST', 'GET'],
+    }
+)
 server.register(fastifyHttpErrorsEnhanced, {
     hideUnhandledErrors: process.env.NODE_ENV !== 'development',
 })

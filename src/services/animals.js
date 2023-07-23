@@ -5,16 +5,25 @@ import adjectives from '../entities/animals/adjectives.js'
 import animals from '../entities/animals/names.js'
 import colors from '../entities/animals/colors.js'
 import icons from '../entities/animals/icons.js'
+import { OutputImageFormats } from '../entities/animals/format.js'
+import { isUsernameAvailable } from '../helpers/telegram/username.js'
 
 export class AnimalsService extends AbstractService {
     /**
-     * @returns {Promise<{image: Buffer, meta: {adjective: *, name: string, animal: *}}>}
+     * @param format
+     * @returns {Promise<{image: (Buffer|string), meta: {[p: string]: *}}>}
      */
-    async draw() {
-        const meta = await this.#getAnimalData()
-        const image = await this.#getAnimalImage(meta.animal.toLowerCase())
+    async draw({ format } = {}) {
+        const data = await this.#getAnimalData()
+        const image = await this.#getAnimalImage(data.animal, arguments[0])
 
-        return { image, meta }
+        return {
+            image,
+            meta: {
+                ...data,
+                is_username_available: await isUsernameAvailable(data.name),
+            },
+        }
     }
 
     /**
@@ -24,55 +33,59 @@ export class AnimalsService extends AbstractService {
         const i = Math.floor(Math.random() * adjectives.length)
         const k = Math.floor(Math.random() * animals.length)
 
-        const adjective = capitalize(adjectives[i])
-        const animal = capitalize(animals[k])
+        const adjective = adjectives[i]
+        const animal = animals[k]
+        const name = [adjective, animal].map(capitalize).join(' ')
 
         return {
             adjective,
             animal,
-            name: adjective + ' ' + animal,
+            name,
         }
     }
 
     /**
-     * @param animalName
-     * @param base64
+     * @param animal
+     * @param format
      * @returns {Promise<Buffer|string>}
      */
-    async #getAnimalImage(animalName, { base64 = true } = {}) {
+    async #getAnimalImage(animal, { format = OutputImageFormats.BASE64 } = {}) {
         try {
             sharp.concurrency(0)
-
-            const i = Math.floor(Math.random() * colors.length)
-
-            const animalPath = Buffer.from(
-                icons.find(e => e.name === animalName).data
-            )
 
             const background = await sharp({
                 create: {
                     width: 1500,
                     height: 1500,
                     channels: 3,
-                    background: colors[i],
+                    background:
+                        colors[Math.floor(Math.random() * colors.length)],
                 },
             })
                 .png()
                 .toBuffer()
 
-            const animalResized = await sharp(animalPath, { density: 450 })
+            const { data: animalIcon } = icons.find(
+                ({ name }) => name === animal
+            )
+            const animalIconResized = await sharp(Buffer.from(animalIcon), {
+                density: 450,
+            })
                 .resize({ width: 800 })
                 .toBuffer()
 
-            const result = await sharp(background)
-                .composite([{ input: animalResized, gravity: 'centre' }])
+            const animalImageBuffer = await sharp(background)
+                .composite([{ input: animalIconResized, gravity: 'centre' }])
                 .toBuffer()
 
-            if (base64) {
-                return result.toString('base64')
+            switch (format) {
+                case OutputImageFormats.BASE64:
+                    return animalImageBuffer.toString('base64')
+                case OutputImageFormats.BUFFER:
+                    return animalImageBuffer
+                default:
+                    throw new Error('Unknown format')
             }
-
-            return result
         } catch (err) {
             console.error(err)
         }

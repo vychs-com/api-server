@@ -31,6 +31,8 @@
     },
     "dependencies": {
         "@fastify/rate-limit": "^8.0.3",
+        "axios": "^1.4.0",
+        "cheerio": "^1.0.0-rc.12",
         "fastify": "^4.20.0",
         "fastify-http-errors-enhanced": "^4.1.0",
         "http-errors-enhanced": "^1.0.13",

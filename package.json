@@ -1,0 +1,40 @@
+{
+    "name": "api-server",
+    "version": "1.0.0",
+    "main": "index.js",
+    "bin": {
+        "api-server": "bin/server.js"
+    },
+    "type": "module",
+    "scripts": {
+        "dev": "node bin/server.js",
+        "prettier": "npx prettier --write ."
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/vychs-com/api-server.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/vychs-com/api-server/issues"
+    },
+    "homepage": "https://github.com/vychs-com/api-server#readme",
+    "description": "",
+    "devDependencies": {
+        "dotenv": "^16.3.1",
+        "nodemon": "^3.0.1",
+        "prettier": "^3.0.0",
+        "prettier-plugin-organize-imports": "^3.2.3",
+        "typescript": "^5.1.6"
+    },
+    "dependencies": {
+        "@fastify/rate-limit": "^8.0.3",
+        "fastify": "^4.20.0",
+        "fastify-http-errors-enhanced": "^4.1.0",
+        "http-errors-enhanced": "^1.0.13",
+        "isobject": "^4.0.0",
+        "sharp": "^0.32.4"
+    }
+}

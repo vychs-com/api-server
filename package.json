@@ -3,11 +3,12 @@
     "version": "1.0.0",
     "main": "index.js",
     "bin": {
-        "api-server": "bin/server.js"
+        "api-server": "bin/api.js"
     },
     "type": "module",
     "scripts": {
-        "dev": "node bin/server.js",
+        "api": "node bin/api.js",
+        "media": "node bin/media.js",
         "prettier": "npx prettier --write ."
     },
     "repository": {
@@ -38,6 +39,8 @@
         "fastify-http-errors-enhanced": "^4.1.0",
         "http-errors-enhanced": "^1.0.13",
         "isobject": "^4.0.0",
-        "sharp": "^0.32.4"
+        "redis": "^4.6.12",
+        "sharp": "^0.32.4",
+        "uuid": "^9.0.1"
     }
 }

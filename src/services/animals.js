@@ -11,7 +11,7 @@ import { isUsernameAvailable } from '../helpers/telegram/username.js'
 export class AnimalsService extends AbstractService {
     /**
      * @param format
-     * @returns {Promise<{image: (Buffer|string), meta: {[p: string]: *}}>}
+     * @returns {Promise<{image: (Buffer|string), information: {[p: string]: *}}>}
      */
     async draw({ format } = {}) {
         const data = await this.#getAnimalData()
@@ -19,7 +19,7 @@ export class AnimalsService extends AbstractService {
 
         return {
             image,
-            meta: {
+            information: {
                 ...data,
                 is_username_available: await isUsernameAvailable(data.name),
             },

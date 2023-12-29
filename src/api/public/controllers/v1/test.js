@@ -1,4 +1,4 @@
-import { Controller } from '../../../controller.js'
+import { Controller } from '../../../../controller.js'
 
 export class V1_TestController extends Controller {
     async test(request, reply) /**

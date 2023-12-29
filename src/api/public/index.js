@@ -8,7 +8,7 @@ import { V1_AnimalsController } from './controllers/v1/animals.js'
  * @returns {[IndexController,V1_TestController,V1_AnimalsController]}
  * @constructor
  */
-export const ApiControllers = (core, opts = {}) => {
+export const PublicApiControllers = (core, opts = {}) => {
     return [
         new IndexController(core, opts),
         new V1_TestController(core, opts),

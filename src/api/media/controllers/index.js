@@ -49,7 +49,7 @@ export class IndexController extends Controller {
         if (request.query?.download) {
             reply.header(
                 'Content-Disposition',
-                `attachment; filename="${image.filename}.png"`
+                `attachment; filename="${image.filename}"`
             )
         }
 

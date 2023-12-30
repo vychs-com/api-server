@@ -6,8 +6,26 @@ import { AnimalPicture } from '../../../../entities/animal-picture.js'
 import { isUsernameAvailable } from '../../../../helpers/telegram/username.js'
 import colors from '../../../../enums/animal/colors.js'
 import { isValidHexColor } from '../../../../helpers/is-valid-hex-color.js'
+import species from '../../../../enums/animal/species.js'
 
 export class V1_AnimalsController extends Controller {
+    async list(request, reply) /**
+     * @http-method get
+     * @url /v1/animals
+     * @rateLimit {
+     *      max: 1200,
+     *      timeWindow: 60000
+     * }
+     * @param request
+     * @param reply
+     * @private
+     * @returns {Promise<void>}
+     */ {
+        await this.validatePublicRequest(request, reply)
+
+        this.replyWithSuccess(reply, species)
+    }
+
     async draw(request, reply) /**
      * @http-method get
      * @url /v1/animals/draw
@@ -17,6 +35,7 @@ export class V1_AnimalsController extends Controller {
      * }
      * @schema {
      *     querystring: {
+     *         animal: { type: 'string' },
      *         color: { type: 'string' },
      *         background: { type: 'string' },
      *     }
@@ -28,17 +47,20 @@ export class V1_AnimalsController extends Controller {
      */ {
         await this.validatePublicRequest(request, reply)
 
-        if (request.query?.color && !isValidHexColor(request.query?.color)) {
+        if (request.query?.color && !isValidHexColor(request.query.color)) {
             throw new BadRequestError('Invalid animal HEX color passed')
         }
         if (
             request.query?.background &&
-            !isValidHexColor(request.query?.background)
+            !isValidHexColor(request.query.background)
         ) {
             throw new BadRequestError('Invalid background HEX color passed')
         }
+        if (request.query?.animal && !species.includes(request.query.animal)) {
+            throw new BadRequestError('Unknown animal passed')
+        }
 
-        const animal = new Animal()
+        const animal = new Animal(request.query?.animal)
         const animalPicture = new AnimalPicture(
             animal,
             request.query?.background ||

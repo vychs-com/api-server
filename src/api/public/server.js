@@ -9,8 +9,8 @@ import {
 import { PublicApiControllers } from './index.js'
 
 export class PublicApiHttpServer {
-    constructor(container, port) {
-        this.container = container
+    constructor(core, port) {
+        this.core = core
         this.port = port
         this.server = fastify({
             logger: false,
@@ -42,7 +42,7 @@ export class PublicApiHttpServer {
         schemaValidator(this.server)
         fastifyInstallControllers(
             this.server,
-            PublicApiControllers(this.container),
+            PublicApiControllers(this.core),
             route => {
                 console.log('Installing ' + route.url, route)
                 return route

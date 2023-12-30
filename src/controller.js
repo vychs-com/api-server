@@ -1,4 +1,5 @@
 import { BadRequestError } from 'http-errors-enhanced'
+import { ApiResponse } from './entities/api-response.js'
 
 export class Controller {
     /**
@@ -8,6 +9,16 @@ export class Controller {
     constructor(core, opts = {}) {
         Object.assign(this, opts)
         this.core = core
+    }
+
+    replyWithSuccess(reply, data = null, message = 'Success') {
+        reply.code(200).send(
+            new ApiResponse({
+                statusCode: 200,
+                data,
+                message,
+            })
+        )
     }
 
     /**

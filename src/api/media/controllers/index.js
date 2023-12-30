@@ -18,6 +18,10 @@ export class IndexController extends Controller {
     async viewMedia(request, reply) /**
      * @http-method get
      * @url /view
+     * @rateLimit {
+     *      max: 500,
+     *      timeWindow: 60000
+     * }
      * @schema {
      *     querystring: {
      *         id: { type: 'string' },
@@ -44,8 +48,6 @@ export class IndexController extends Controller {
             )
         }
 
-        const buffer = Buffer.from(image.base64, 'base64')
-
         if (request.query?.download) {
             reply.header(
                 'Content-Disposition',
@@ -54,6 +56,6 @@ export class IndexController extends Controller {
         }
 
         reply.header('Content-Type', 'image/png')
-        reply.send(buffer)
+        reply.send(Buffer.from(image.buffer))
     }
 }

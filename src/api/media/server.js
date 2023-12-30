@@ -9,8 +9,8 @@ import {
 import { MediaApiControllers } from './index.js'
 
 export class MediaApiHttpServer {
-    constructor(container, port) {
-        this.container = container
+    constructor(core, port) {
+        this.core = core
         this.port = port
         this.server = fastify({
             logger: false,
@@ -43,7 +43,7 @@ export class MediaApiHttpServer {
         schemaValidator(this.server)
         fastifyInstallControllers(
             this.server,
-            MediaApiControllers(this.container),
+            MediaApiControllers(this.core),
             route => {
                 console.log('Installing ' + route.url, route)
                 return route

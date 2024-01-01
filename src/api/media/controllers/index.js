@@ -38,7 +38,7 @@ export class IndexController extends Controller {
         const key = request.query?.id
         const rawImage = await this.core.redis.get(key)
         if (!rawImage) {
-            throw new NotFoundError('Requested image not found or expired')
+            throw new NotFoundError('Requested image is not found or expired')
         }
 
         const image = JSON.parse(rawImage)

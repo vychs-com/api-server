@@ -1,14 +1,42 @@
 import axios from 'axios'
 import { load } from 'cheerio'
 
-export const isUsernameAvailable = async name => {
-    try {
-        const { data } = await axios(
-            `https://t.me/${name.toLowerCase().replace(/\s/g, '')}`
-        )
-        const $ = load(data)
+const fragmentUrl = 'https://fragment.com/username/'
+const tgUrl = 'https://t.me/'
 
-        return $('div[class="tgme_page_extra"]').text().length <= 0
+/**
+ * @param name
+ * @returns {Promise<{available: boolean, url: null, on_auction: boolean}>}
+ */
+export const getUsernameInformation = async name => {
+    try {
+        const result = {
+            available: false,
+            on_auction: false,
+            url: null,
+        }
+
+        const username = name.toLowerCase().replace(/\s/g, '')
+        const response = await axios(fragmentUrl + username)
+        const redirectCount = response.request._redirectable._redirectCount
+
+        if (response.status !== 200) return result
+
+        // fragment redirects if username isn't in an auction
+        if (redirectCount > 0) {
+            result.available = true
+            result.url = tgUrl + username
+            return result
+        }
+
+        const $ = load(response.data)
+        result.available = result.on_auction =
+            $(
+                'span[class="tm-section-header-status tm-status-avail"]'
+            ).text() === 'Available'
+        result.url = (result.available ? fragmentUrl : tgUrl) + username
+
+        return result
     } catch (err) {
         console.error(err)
     }

@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { BadRequestError, InternalServerError } from 'http-errors-enhanced'
 import { Animal } from '../../../../entities/animal.js'
 import { AnimalPicture } from '../../../../entities/animal-picture.js'
-import { isUsernameAvailable } from '../../../../helpers/telegram/username.js'
+import { getUsernameInformation } from '../../../../helpers/telegram/username.js'
 import colors from '../../../../enums/animal/colors.js'
 import { isValidHexColor } from '../../../../helpers/is-valid-hex-color.js'
 import species from '../../../../enums/animal/species.js'
@@ -83,12 +83,12 @@ export class V1_AnimalsController extends Controller {
             NX: true,
         })
 
-        const usernameAvailable = await isUsernameAvailable(animal.name)
+        const usernameInformation = await getUsernameInformation(animal.name)
 
         this.replyWithSuccess(reply, {
             url: '/view?id=' + key,
             name: animal.name,
-            username_available: usernameAvailable,
+            username_information: usernameInformation,
         })
     }
 }

@@ -9,7 +9,9 @@
     "scripts": {
         "api": "node bin/api.js",
         "media": "node bin/media.js",
-        "prettier": "npx prettier --write ."
+        "prettier": "npx prettier --write .",
+        "prisma-gen": "yarn run prisma generate --schema prisma/schema.prisma",
+        "migrate-dev": "yarn run prisma format --schema prisma/schema.prisma; yarn run prisma migrate dev --schema prisma/schema.prisma"
     },
     "repository": {
         "type": "git",
@@ -28,7 +30,8 @@
         "nodemon": "^3.0.1",
         "prettier": "^3.0.0",
         "prettier-plugin-organize-imports": "^3.2.3",
-        "typescript": "^5.1.6"
+        "typescript": "^5.1.6",
+        "prisma": "^4.11.0"
     },
     "dependencies": {
         "@fastify/cors": "^8.3.0",
@@ -36,6 +39,7 @@
         "axios": "^1.4.0",
         "cheerio": "^1.0.0-rc.12",
         "fastify": "^4.20.0",
+        "@prisma/client": "^4.11.0",
         "fastify-http-errors-enhanced": "^4.1.0",
         "http-errors-enhanced": "^1.0.13",
         "isobject": "^4.0.0",

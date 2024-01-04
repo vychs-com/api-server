@@ -1,16 +1,24 @@
 import 'dotenv/config'
 
 import { createClient as createRedisClient } from 'redis'
+import { ProjectService } from './services/project.js'
+import prisma from './helpers/database/client.js'
 
 export class Core {
     constructor() {
-        this.services = {}
+        /**
+         * @type {{projects: ProjectService}}
+         */
+        this.services = {
+            projects: new ProjectService(this),
+        }
     }
 
     /**
      * @returns {Promise<void>}
      */
     async init() {
+        await this.#initPrisma()
         await this.#initRedisClient()
 
         /**
@@ -32,6 +40,10 @@ export class Core {
         process.on('SIGTERM', shutdownHandler)
         process.on('uncaughtException', shutdownHandler)
         process.on('unhandledRejection', shutdownHandler)
+    }
+
+    #initPrisma() {
+        this.prisma = prisma
     }
 
     /**

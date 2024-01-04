@@ -1,0 +1,21 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["fieldReference", "filteredRelationCount"]
+  engineType      = "binary"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DB_URL42")
+}
+
+model project {
+  id          Int     @id @default(autoincrement())
+  title       String
+  description String?
+  web_url     String?
+  tg_url      String?
+  source_url  String?
+
+  @@map("projects")
+}

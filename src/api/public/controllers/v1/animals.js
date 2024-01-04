@@ -55,39 +55,6 @@ export class V1_AnimalsController extends Controller {
         this.replyWithSuccess(reply, true)
     }
 
-    async usageStats(request, reply) /**
-     * @http-method get
-     * @url /v1/animals/stats
-     * @rateLimit {
-     *      max: 1200,
-     *      timeWindow: 60000
-     * }
-     * @param request
-     * @param reply
-     * @private
-     * @returns {Promise<void>}
-     */ {
-        await this.validatePublicRequest(request, reply)
-
-        const project = await this.core.services.projects.findOne({
-            slug: 'animals',
-        })
-        if (!project)
-            throw new NotFoundError(
-                'Failed to get usage stats: project not found'
-            )
-
-        const stats = await this.core.services.usageStatistics.getUsageStats(
-            project.id
-        )
-        if (!stats)
-            throw new InternalServerError(
-                'Failed to retrieve any data from the database'
-            )
-
-        this.replyWithSuccess(reply, stats)
-    }
-
     async draw(request, reply) /**
      * @http-method get
      * @url /v1/animals/draw

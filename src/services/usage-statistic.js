@@ -63,6 +63,10 @@ export class UsageStatisticService extends AbstractService {
                 },
             },
             {
+                select: {
+                    timestamp: true,
+                    count: true,
+                },
                 orderBy: {
                     timestamp: 'asc',
                 },

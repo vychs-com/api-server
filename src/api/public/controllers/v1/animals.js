@@ -83,12 +83,12 @@ export class V1_AnimalsController extends Controller {
             NX: true,
         })
 
-        const usernameInformation = await getUsernameInformation(animal.name)
+        const username = await getUsernameInformation(animal.name)
 
         this.replyWithSuccess(reply, {
             url: '/view?id=' + key,
             name: animal.name,
-            username_information: usernameInformation,
+            username,
         })
     }
 }

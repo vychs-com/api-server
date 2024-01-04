@@ -3,14 +3,16 @@ import 'dotenv/config'
 import { createClient as createRedisClient } from 'redis'
 import { ProjectService } from './services/project.js'
 import prisma from './helpers/database/client.js'
+import { UsageStatisticService } from './services/usage-statistic.js'
 
 export class Core {
     constructor() {
         /**
-         * @type {{projects: ProjectService}}
+         * @type {{projects: ProjectService, usageStatistics: UsageStatisticService}}
          */
         this.services = {
             projects: new ProjectService(this),
+            usageStatistics: new UsageStatisticService(this),
         }
     }
 

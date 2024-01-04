@@ -6,14 +6,32 @@ export class ProjectService extends AbstractService {
     }
 
     get includeRelations() {
-        return {}
+        return {
+            // usage_statistic: true
+        }
     }
 
     get exportableFields() {
-        return ['title', 'description', 'web_url', 'tg_url', 'source_url']
+        return [
+            'title',
+            'slug',
+            'description',
+            'web_url',
+            'tg_url',
+            'source_url',
+            'has_usage_stats',
+        ]
     }
 
     get updatableFields() {
-        return ['title', 'description', 'web_url', 'tg_url', 'source_url']
+        return [
+            'title',
+            'slug',
+            'description',
+            'web_url',
+            'tg_url',
+            'source_url',
+            'has_usage_stats',
+        ]
     }
 }

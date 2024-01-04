@@ -15,7 +15,14 @@ export class V1_ProjectsController extends Controller {
      */ {
         await this.validatePublicRequest(request, reply)
 
-        const projects = await this.core.services.projects.findMany()
+        const projects = await this.core.services.projects.findMany(
+            {},
+            {
+                orderBy: {
+                    id: 'asc',
+                },
+            }
+        )
 
         this.replyWithSuccess(reply, projects)
     }

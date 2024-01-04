@@ -29,7 +29,7 @@ export class MediaApiHttpServer {
             global: false,
         })
         await this.server.register(cors, {
-            origin: /^http[s]?:\/\/(?:animals\.)?(vychs\.com|localhost:3000)(?:\/.*)?$/,
+            origin: /^http[s]?:\/\/(?:animals\.)?(vychs\.com|localhost:3000|localhost:3001|localhost:3002)(?:\/.*)?$/,
             credentials: true,
             methods: ['POST', 'GET', 'OPTIONS'],
             exposedHeaders: 'Content-Disposition',

@@ -9,13 +9,28 @@ datasource db {
   url      = env("DB_URL42")
 }
 
+model usage_statistic {
+  id         Int     @id @default(autoincrement())
+  project_id Int
+  timestamp  Decimal @db.Decimal
+  count      Int
+  project    project @relation(fields: [project_id], references: [id])
+
+  @@unique([project_id, timestamp])
+  @@index([project_id, timestamp], map: "project_id_timestamp")
+  @@map("usage_statistics")
+}
+
 model project {
-  id          Int     @id @default(autoincrement())
-  title       String
-  description String?
-  web_url     String?
-  tg_url      String?
-  source_url  String?
+  id               Int               @id @default(autoincrement())
+  title            String
+  slug             String?
+  description      String?
+  web_url          String?
+  tg_url           String?
+  source_url       String?
+  has_usage_stats  Boolean           @default(false)
+  usage_statistics usage_statistic[]
 
   @@map("projects")
 }

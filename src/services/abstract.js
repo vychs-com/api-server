@@ -90,6 +90,31 @@ export class AbstractService {
 
     /**
      * @param where
+     * @param update
+     * @param create
+     * @param prismaInstance
+     * @returns {*}
+     */
+    upsert(where, update, create, prismaInstance = null) {
+        const prisma = prismaInstance || this.core.prisma
+
+        if (!Object.values(where).length) {
+            throw new Error('No where to upsert passed')
+        }
+        if (!Object.values(update).length) {
+            throw new Error('No update data to update passed')
+        }
+        if (!Object.values(create).length) {
+            throw new Error('No create data to create passed')
+        }
+
+        return prisma[this.modelName].upsert(
+            this.#mapPrismaArguments({ where, update, create })
+        )
+    }
+
+    /**
+     * @param where
      * @param select
      * @param include
      * @param orderBy

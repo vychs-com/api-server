@@ -29,7 +29,7 @@ export class PublicApiHttpServer {
             global: false,
         })
         await this.server.register(cors, {
-            origin: /^http[s]?:\/\/(?:animals\.)?(vychs\.com|localhost:3000|localhost:3001|localhost:3002)(?:\/.*)?$/,
+            origin: /^http[s]?:\/\/(?:animals\.)?(vychs\.com|localhost:3000)(?:\/.*)?$/,
             credentials: true,
             methods: ['POST', 'GET'],
         })

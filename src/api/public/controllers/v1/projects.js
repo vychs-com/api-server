@@ -19,7 +19,7 @@ export class V1_ProjectsController extends Controller {
             {},
             {
                 orderBy: {
-                    id: 'asc',
+                    id: 'desc',
                 },
             }
         )

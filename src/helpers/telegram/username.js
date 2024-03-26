@@ -38,10 +38,13 @@ export const getUsernameInformation = async name => {
             ).text() === 'Available'
         result.url = (result.available ? fragmentUrl : tgUrl) + username
 
-        const priceText = $('div[class="table-cell-desc"]').text().trim()
-        const priceMatch = priceText.match(/[\d,]+\.\d{2}/)
+        const priceText = document
+            .querySelector('.table-cell-desc')
+            .textContent.replace(/,/g, '')
+            .trim()
+        const priceMatch = priceText.match(/[+-]?([0-9]*[.])?[0-9]+/)
         if (result.on_auction && priceMatch) {
-            result.price = parseFloat(priceMatch[0].replace(/,/g, ''))
+            result.price = parseFloat(priceMatch[0])
         }
 
         return result

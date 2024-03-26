@@ -14,6 +14,7 @@ export const getUsernameInformation = async name => {
             available: false,
             on_auction: false,
             url: null,
+            price: 0,
         }
 
         const username = name.toLowerCase().replace(/\s/g, '')
@@ -30,11 +31,18 @@ export const getUsernameInformation = async name => {
         }
 
         const $ = load(response.data)
+
         result.available = result.on_auction =
             $(
                 'span[class="tm-section-header-status tm-status-avail"]'
             ).text() === 'Available'
         result.url = (result.available ? fragmentUrl : tgUrl) + username
+
+        const priceText = $('div[class="table-cell-desc"]').text().trim()
+        const priceMatch = priceText.match(/[\d,]+\.\d{2}/)
+        if (result.on_auction && priceMatch) {
+            result.price = parseFloat(priceMatch[0].replace(/,/g, ''))
+        }
 
         return result
     } catch (err) {

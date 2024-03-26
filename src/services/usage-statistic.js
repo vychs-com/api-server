@@ -74,12 +74,12 @@ export class UsageStatisticService extends AbstractService {
         )
 
         const statsMap = new Map(
-            stats.map(stat => [dayjs(+stat.timestamp).format('DD.MM.YY'), stat])
+            stats.map(stat => [dayjs(+stat.timestamp).format('MMM DD'), stat])
         )
 
         return Array.from({ length: 5 }, (_, index) => {
             const currentDate = today.subtract(index, 'days')
-            const formattedDate = currentDate.format('DD.MM.YY')
+            const formattedDate = currentDate.format('MMM DD')
             const statForDate = statsMap.get(formattedDate)
 
             return {
